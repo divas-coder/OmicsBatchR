@@ -3,10 +3,10 @@ Title: Comprehensive Batch Correction and Benchmarking for Single-Cell and Bulk 
 Version: 0.1.0
 Authors@R: c(
     person("Divya", "Mishra", 
-           email = "panomiq@gmail.com", 
+           email = "mishra.divya76@gmail.com", 
            role = c("aut", "cre"),
            comment = c(ORCID = "0000-0000-0000-0000")),
-    person("Panomiq Bioinformatics Team", 
+    person("Bioinformatics Team", 
            role = c("aut"))
   )
 Description: OmicsBatchR provides a unified interface to run, compare, and benchmark 
