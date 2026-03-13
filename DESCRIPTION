@@ -46,5 +46,5 @@ Suggests:
     scater,
     BiocStyle
 biocViews: SingleCell, BatchEffect, Normalization, DimensionReduction
-URL: https://github.com/panomiq/OmicsBatchR
-BugReports: https://github.com/panomiq/OmicsBatchR/issues
+URL: https://github.com/OmicsBatchR
+BugReports: https://github.com/OmicsBatchR/issues
