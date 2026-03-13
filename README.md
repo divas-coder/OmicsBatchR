@@ -127,20 +127,16 @@ OmicsBatchR/
 
 ---
 
-## About Panomiq
 
-**Panomiq** is a multi-omics data analysis platform built for clinical genomics.
-We offer bioinformatics analysis, custom pipeline development, and AI/ML model
-building for genomics data.
 
-Contact: panomiq@gmail.com | [Upwork](https://upwork.com) | [LinkedIn](https://linkedin.com)
+Contact:  [Upwork](https://upwork.com) | [LinkedIn](https://linkedin.com)
 
 ---
 
 ## Citation
 
 ```
-Mishra D. & Panomiq Bioinformatics Team (2025). OmicsBatchR: Comprehensive
+OmicsBatchR: Comprehensive
 Batch Correction for Single-Cell and Bulk Omics Data.
 GitHub: https://github.com/panomiq/OmicsBatchR
 ```
