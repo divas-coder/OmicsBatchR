@@ -1,6 +1,6 @@
 ---
 title: "Getting Started with OmicsBatchR"
-author: "Panomiq Bioinformatics Team"
+author: "Bioinformatics Team"
 date: "`r Sys.Date()`"
 output:
   BiocStyle::html_document:
