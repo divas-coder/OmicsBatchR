@@ -48,7 +48,7 @@ OmicsBatchR supports these methods:
 
 ```{r install, eval=FALSE}
 # Install from GitHub
-devtools::install_github("panomiq/OmicsBatchR")
+devtools::install_github("OmicsBatchR")
 
 # For Python-based methods, also install:
 reticulate::conda_create("r-reticulate")
