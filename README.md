@@ -36,7 +36,7 @@ plot_batch_comparison(results, color_by = "batch")
 
 ```r
 # Install from GitHub
-devtools::install_github("panomiq/OmicsBatchR")
+devtools::install_github("OmicsBatchR")
 
 # For Python-based methods (scVI, Scanorama, BBKNN)
 reticulate::conda_create("r-reticulate", python_version = "3.9")
