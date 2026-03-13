@@ -1,0 +1,222 @@
+---
+title: "Getting Started with OmicsBatchR"
+author: "Panomiq Bioinformatics Team"
+date: "`r Sys.Date()`"
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{Getting Started with OmicsBatchR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment  = "#>",
+  fig.width  = 10,
+  fig.height = 6
+)
+```
+
+# Introduction
+
+**OmicsBatchR** provides a single, unified interface to run and benchmark
+multiple batch correction methods for single-cell and bulk RNA-seq data.
+
+Batch effects are a common problem in omics experiments — samples processed
+in different labs, on different days, or with different protocols often show
+technical variation that masks the real biology. Correcting for batch effects
+is essential before clustering, differential expression, or any downstream analysis.
+
+OmicsBatchR supports these methods:
+
+| Method | Type | Best for |
+|--------|------|----------|
+| Harmony | R | Large datasets, fast |
+| Seurat CCA | R | Multi-dataset integration |
+| ComBat-seq | R | Count-level bulk RNA-seq |
+| FastMNN | R | Single-cell, conservative |
+| Scanorama | Python | Panoramic multi-batch |
+| BBKNN | Python | Very large datasets |
+| scVI | Python | Deep learning, complex batches |
+
+# Installation
+
+```{r install, eval=FALSE}
+# Install from GitHub
+devtools::install_github("panomiq/OmicsBatchR")
+
+# For Python-based methods, also install:
+reticulate::conda_create("r-reticulate")
+reticulate::conda_install("r-reticulate",
+  packages = c("scvi-tools", "scanorama", "bbknn", "scanpy", "anndata"),
+  pip = TRUE)
+```
+
+# Quick start
+
+## Load the package
+
+```{r load}
+library(OmicsBatchR)
+library(Seurat)
+```
+
+## Prepare your Seurat object
+
+OmicsBatchR requires a Seurat object with a batch variable in the metadata.
+
+```{r prepare, eval=FALSE}
+# Your Seurat object should have a 'batch' column
+head(your_seurat@meta.data)
+#   orig.ident nCount_RNA nFeature_RNA batch cell_type
+#   Cell1      2500       800          Batch1 T_cell
+#   Cell2      3100       950          Batch2 B_cell
+```
+
+## Run all batch correction methods
+
+```{r run_all, eval=FALSE}
+results <- run_batch_correction(
+  seurat_obj = your_seurat,
+  batch_key  = "batch",
+  methods    = "all",      # runs all 7 methods
+  n_dims     = 30,
+  verbose    = TRUE
+)
+```
+
+## Run specific methods only
+
+```{r run_specific, eval=FALSE}
+results <- run_batch_correction(
+  seurat_obj = your_seurat,
+  batch_key  = "batch",
+  methods    = c("harmony", "fastmnn", "seurat_cca"),
+  n_dims     = 30
+)
+```
+
+# Visualise results
+
+## UMAP comparison grid
+
+```{r plot_umap, eval=FALSE}
+# Colour by batch — check how well batches are mixed
+plot_batch_comparison(
+  results,
+  color_by = "batch"
+)
+
+# Colour by cell type — check biological signal is preserved
+plot_batch_comparison(
+  results,
+  color_by = c("batch", "cell_type"),
+  ncol     = 4
+)
+
+# Save to PDF
+plot_batch_comparison(
+  results,
+  color_by  = "batch",
+  save_path = "batch_comparison_umap.pdf",
+  width     = 18,
+  height    = 12
+)
+```
+
+# Benchmark methods
+
+## Compute LISI and kBET scores
+
+```{r benchmark, eval=FALSE}
+scores <- benchmark_methods(
+  results,
+  batch_key    = "batch",
+  celltype_key = "cell_type"   # optional: for cLISI
+)
+
+print(scores)
+#   method    iLISI  cLISI  kBET_acceptance  overall_score
+#   harmony   1.85   1.12   0.78             0.91
+#   fastmnn   1.72   1.09   0.71             0.84
+#   scvi      1.91   1.08   0.82             0.93
+#   ...
+```
+
+**Metric interpretation:**
+
+- **iLISI** — Integration LISI. Measures batch mixing. *Higher is better.*
+  Range: 1 (no mixing) to n_batches (perfect mixing).
+- **cLISI** — Cell-type LISI. Measures cell-type separation. *Lower is better.*
+  Range: 1 (perfect separation) to n_celltypes.
+- **kBET acceptance rate** — Local neighbourhood batch composition test.
+  *Higher is better.* Range: 0–1.
+- **Overall score** — Weighted composite (iLISI 40% + cLISI 30% + kBET 30%).
+  *Higher is better.*
+
+## Plot benchmark scores
+
+```{r plot_scores, eval=FALSE}
+plot_benchmark_scores(scores)
+```
+
+# Auto-select the best method
+
+```{r select_best, eval=FALSE}
+best <- select_best_method(
+  results,
+  batch_key    = "batch",
+  celltype_key = "cell_type"
+)
+
+cat("Best method:", best$best_method)
+# Best method: scvi
+
+# The corrected Seurat object is ready for downstream analysis
+best_obj <- best$seurat_obj
+```
+
+# Downstream analysis on best-corrected object
+
+```{r downstream, eval=FALSE}
+best_obj <- best$seurat_obj
+
+# Find neighbours using corrected embedding
+best_obj <- FindNeighbors(best_obj, reduction = "scvi", dims = 1:30)
+best_obj <- FindClusters(best_obj, resolution = 0.5)
+
+# Differential expression
+markers <- FindAllMarkers(best_obj, only.pos = TRUE, min.pct = 0.25)
+```
+
+# Python environment setup
+
+For Scanorama, BBKNN, and scVI (Python-based methods):
+
+```{r python_setup, eval=FALSE}
+# One-time setup
+reticulate::conda_create("r-reticulate", python_version = "3.9")
+reticulate::conda_install("r-reticulate",
+  packages = c("scvi-tools", "scanorama", "bbknn", "scanpy", "anndata"),
+  pip = TRUE
+)
+
+# Pass the environment name to run_batch_correction
+results <- run_batch_correction(
+  seurat_obj = your_seurat,
+  batch_key  = "batch",
+  methods    = c("scvi", "scanorama", "bbknn"),
+  python_env = "r-reticulate"
+)
+```
+
+# Session info
+
+```{r session}
+sessionInfo()
+```

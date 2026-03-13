@@ -1,0 +1,50 @@
+Package: OmicsBatchR
+Title: Comprehensive Batch Correction and Benchmarking for Single-Cell and Bulk Omics Data
+Version: 0.1.0
+Authors@R: c(
+    person("Divya", "Mishra", 
+           email = "panomiq@gmail.com", 
+           role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0000-0000-0000")),
+    person("Panomiq Bioinformatics Team", 
+           role = c("aut"))
+  )
+Description: OmicsBatchR provides a unified interface to run, compare, and benchmark 
+    multiple batch correction methods for single-cell and bulk RNA-seq data. 
+    Supported methods include Harmony, Seurat CCA, scVI, ComBat/ComBat-seq, 
+    BBKNN, Scanorama, and FastMNN. The package includes automatic best-method 
+    selection based on LISI and kBET benchmarking scores, and generates 
+    publication-ready PCA/UMAP comparison plots for all methods.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+VignetteBuilder: knitr
+Depends:
+    R (>= 4.1.0)
+Imports:
+    Seurat (>= 4.0.0),
+    harmony,
+    SingleCellExperiment,
+    BiocNeighbors,
+    batchelor,
+    sva,
+    ggplot2,
+    patchwork,
+    dplyr,
+    tidyr,
+    reticulate,
+    Matrix,
+    methods,
+    cli,
+    crayon
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    scater,
+    BiocStyle
+biocViews: SingleCell, BatchEffect, Normalization, DimensionReduction
+URL: https://github.com/panomiq/OmicsBatchR
+BugReports: https://github.com/panomiq/OmicsBatchR/issues
