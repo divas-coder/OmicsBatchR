@@ -2,7 +2,7 @@
 
 > A unified R package for batch correction, benchmarking, and comparison across single-cell and bulk RNA-seq data
 
-**Built by the Panomiq Bioinformatics Team**
+**Built by the Divya Mishra**
 
 ---
 
@@ -129,7 +129,7 @@ OmicsBatchR/
 
 
 
-Contact:  [Upwork](https://upwork.com) | [LinkedIn](https://linkedin.com)
+Contact:  [Upwork](https://www.upwork.com/freelancers/~01a3c803aa6c9d4418) | [LinkedIn](https://www.linkedin.com/in/dr-divya-mishra/)
 
 ---
 
@@ -138,7 +138,7 @@ Contact:  [Upwork](https://upwork.com) | [LinkedIn](https://linkedin.com)
 ```
 OmicsBatchR: Comprehensive
 Batch Correction for Single-Cell and Bulk Omics Data.
-GitHub: https://github.com/panomiq/OmicsBatchR
+GitHub: https://github.com/OmicsBatchR
 ```
 
 ## License
