@@ -14,8 +14,6 @@ Description: OmicsBatchR provides a unified interface to run, compare, and bench
     publication-ready PCA/UMAP comparison plots for all methods.
 License: MIT + file LICENSE
 Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Depends:
     R (>= 4.1.0)
