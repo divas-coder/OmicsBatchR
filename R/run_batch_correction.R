@@ -125,14 +125,19 @@ run_batch_correction <- function(seurat_obj,
 
 .run_harmony <- function(obj, batch_key, n_dims) {
   obj <- harmony::RunHarmony(
-    obj,
+    object        = obj,
     group.by.vars = batch_key,
-    reduction     = "pca",
+    reduction.use = "pca",
     dims.use      = seq_len(n_dims),
     verbose       = FALSE
   )
-  obj <- Seurat::RunUMAP(obj, reduction = "harmony", dims = seq_len(n_dims),
-                         reduction.name = "umap_harmony", verbose = FALSE)
+  obj <- Seurat::RunUMAP(
+    obj,
+    reduction = "harmony",
+    dims = seq_len(n_dims),
+    reduction.name = "umap_harmony",
+    verbose = FALSE
+  )
   obj@misc$correction_method <- "harmony"
   return(obj)
 }
