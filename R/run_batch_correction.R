@@ -308,7 +308,7 @@ run_batch_correction <- function(seurat_obj,
 
   scvi$model$SCVI$setup_anndata(adata, batch_key = batch_key)
   model <- scvi$model$SCVI(adata, n_latent = as.integer(n_dims))
-  model$train(max_epochs = as.integer(400), early_stopping = TRUE)
+  model$train(max_epochs = as.integer(400), early_stopping = TRUE, accelerator = "cpu")
 
   latent              <- model$get_latent_representation()
   rownames(latent)    <- colnames(obj)
